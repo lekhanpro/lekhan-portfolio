@@ -1,31 +1,87 @@
-import { useAuth } from "@/_core/hooks/useAuth";
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { getLoginUrl } from "@/const";
-import { Streamdown } from 'streamdown';
+import { useEffect, useState } from 'react';
+import Navigation from '@/components/Navigation';
+import Hero from '@/components/Hero';
+import About from '@/components/About';
+import Skills from '@/components/Skills';
+import Projects from '@/components/Projects';
+import Experience from '@/components/Experience';
+import Contact from '@/components/Contact';
+import Footer from '@/components/Footer';
+import {
+  fetchProfile,
+  fetchRepositories,
+  getTopRepositories,
+  getLanguageStats,
+  generateExperienceTimeline,
+  GitHubProfile,
+  GitHubRepository,
+  LanguageStats,
+  ExperienceEvent,
+} from '@/lib/github';
 
-/**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Workflow, Frontend Best Practices, Design Guide and Common Pitfalls
- */
 export default function Home() {
-  // The userAuth hooks provides authentication state
-  // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
-  let { user, loading, error, isAuthenticated, logout } = useAuth();
+  const [profile, setProfile] = useState<GitHubProfile | null>(null);
+  const [projects, setProjects] = useState<GitHubRepository[]>([]);
+  const [languages, setLanguages] = useState<LanguageStats[]>([]);
+  const [experience, setExperience] = useState<ExperienceEvent[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        // Fetch profile
+        const profileData = await fetchProfile();
+        setProfile(profileData);
+
+        // Fetch repositories
+        const reposData = await fetchRepositories();
+        const topRepos = getTopRepositories(reposData, 6);
+        setProjects(topRepos);
+
+        // Get language stats
+        const langStats = getLanguageStats(reposData);
+        setLanguages(langStats);
+
+        // Generate experience timeline
+        const experienceEvents = generateExperienceTimeline(profileData, reposData);
+        setExperience(experienceEvents);
+      } catch (err) {
+        console.error('Error loading portfolio data:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load portfolio data');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
+    <div className="min-h-screen bg-background">
+      <Navigation />
+
+      {/* Main Content */}
+      <main className="pt-16">
+        <Hero profile={profile} isLoading={isLoading} />
+        <About profile={profile} languages={languages} isLoading={isLoading} />
+        <Skills />
+        <Projects projects={projects} isLoading={isLoading} />
+        <Experience events={experience} isLoading={isLoading} />
+        <Contact profile={profile} isLoading={isLoading} />
       </main>
+
+      <Footer />
+
+      {/* Error Toast */}
+      {error && (
+        <div className="fixed bottom-4 right-4 p-4 rounded-lg bg-red-500/20 border border-red-500/50 text-red-200 text-sm">
+          {error}
+        </div>
+      )}
     </div>
   );
 }
