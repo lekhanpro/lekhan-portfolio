@@ -12,12 +12,15 @@ Railway is excellent for apps with a persistent backend and database.
 4. **Environment Variables**: Add `DATABASE_URL` (you can provision a MySQL database directly on Railway).
 5. **Custom Domain**: Go to the "Settings" tab of your project, find "Domains", and add your own URL.
 
-### Option B: Vercel
-Vercel is great for the frontend but requires some tweaks for the backend.
+### Option B: Vercel (Optimized)
+I have optimized the repository for Vercel using Serverless Functions.
 1. Go to [Vercel.com](https://vercel.com/).
 2. Import your `lekhan-portfolio` repository.
-3. **Environment Variables**: Add `DATABASE_URL`.
-4. **Custom Domain**: Go to "Settings" -> "Domains" to add your own URL.
+3. **Framework Preset**: Select `Vite`.
+4. **Build Command**: `pnpm build`
+5. **Output Directory**: `dist/public`
+6. **Environment Variables**: Add `DATABASE_URL`.
+7. **Custom Domain**: Go to "Settings" -> "Domains" to add your own URL.
 
 ## 2. Database Setup
 This project uses **Drizzle ORM** with **MySQL**.
