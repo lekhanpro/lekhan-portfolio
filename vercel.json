@@ -4,7 +4,7 @@
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "dist/public", "installCommand": "pnpm install --no-frozen-lockfile" }
+      "config": { "distDir": "dist/public" }
     },
     {
       "src": "api/index.ts",
