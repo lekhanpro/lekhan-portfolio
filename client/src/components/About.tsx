@@ -1,4 +1,7 @@
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import { GitHubProfile, LanguageStats } from '@/lib/github';
+import { Users, FolderGit2, Calendar, Code2 } from 'lucide-react';
 
 interface AboutProps {
   profile: GitHubProfile | null;
@@ -6,14 +9,26 @@ interface AboutProps {
   isLoading: boolean;
 }
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+  }),
+};
+
 export default function About({ profile, languages, isLoading }: AboutProps) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-100px' });
+
   if (isLoading) {
     return (
-      <section id="about" className="py-20 bg-white/5">
+      <section id="about" className="py-24">
         <div className="container">
-          <div className="animate-pulse space-y-4">
-            <div className="h-12 bg-white/10 rounded-lg w-1/4" />
-            <div className="h-40 bg-white/10 rounded-lg w-full" />
+          <div className="animate-pulse space-y-6">
+            <div className="h-12 bg-white/5 rounded-2xl w-48" />
+            <div className="h-40 bg-white/5 rounded-2xl w-full" />
           </div>
         </div>
       </section>
@@ -24,122 +39,146 @@ export default function About({ profile, languages, isLoading }: AboutProps) {
     {
       label: 'Followers',
       value: profile?.followers.toLocaleString() || '0',
-      icon: '👥',
+      icon: Users,
+      gradient: 'from-blue-500/20 to-cyan-500/20',
     },
     {
       label: 'Public Repos',
       value: profile?.repos.toLocaleString() || '0',
-      icon: '📦',
+      icon: FolderGit2,
+      gradient: 'from-indigo-500/20 to-purple-500/20',
     },
     {
       label: 'Joined',
-      value: profile?.createdAt ? new Date(profile.createdAt).getFullYear() : '—',
-      icon: '📅',
+      value: profile?.createdAt ? new Date(profile.createdAt).getFullYear().toString() : '—',
+      icon: Calendar,
+      gradient: 'from-purple-500/20 to-pink-500/20',
     },
     {
       label: 'Top Language',
       value: languages[0]?.name || '—',
-      icon: '💻',
+      icon: Code2,
+      gradient: 'from-pink-500/20 to-rose-500/20',
     },
   ];
 
   return (
-    <section id="about" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 via-transparent to-purple-500/5" />
+    <section id="about" className="py-24 relative overflow-hidden" ref={ref}>
+      <div className="orb orb-primary w-[350px] h-[350px] top-0 right-0" />
 
       <div className="container relative z-10">
         {/* Section Header */}
-        <div className="mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4">About Me</h2>
-          <p className="text-lg text-foreground/60 max-w-2xl">
+        <motion.div
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          custom={0}
+          variants={fadeUp}
+          className="mb-16"
+        >
+          <span className="text-sm font-semibold text-indigo-400 uppercase tracking-widest mb-3 block">
+            Get to know me
+          </span>
+          <h2 className="section-heading">About Me</h2>
+          <p className="section-subtitle">
             {profile?.bio || 'Full-Stack Developer with a passion for building innovative solutions'}
           </p>
-        </div>
+        </motion.div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-          {stats.map((stat, index) => (
-            <div
-              key={index}
-              className="p-6 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-200 group"
-            >
-              <div className="text-3xl mb-3">{stat.icon}</div>
-              <div className="text-2xl font-bold mb-1">{stat.value}</div>
-              <div className="text-sm text-foreground/60">{stat.label}</div>
-            </div>
-          ))}
+          {stats.map((stat, index) => {
+            const Icon = stat.icon;
+            return (
+              <motion.div
+                key={index}
+                initial="hidden"
+                animate={isInView ? 'visible' : 'hidden'}
+                custom={index + 1}
+                variants={fadeUp}
+                className="glass-card p-6 group"
+              >
+                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center mb-4`}>
+                  <Icon size={20} className="text-foreground/80" />
+                </div>
+                <div className="text-2xl sm:text-3xl font-bold mb-1">{stat.value}</div>
+                <div className="text-sm text-muted-foreground">{stat.label}</div>
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* Languages Section */}
-        {languages.length > 0 && (
-          <div className="mb-16">
-            <h3 className="text-2xl font-bold mb-8">Top Programming Languages</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {languages.map((lang, index) => (
-                <div
-                  key={index}
-                  className="p-6 rounded-lg bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-white/10 hover:border-white/20 transition-all duration-200"
-                >
-                  <div className="font-semibold mb-2">{lang.name}</div>
-                  <div className="text-sm text-foreground/60">{lang.count} repositories</div>
-                  <div className="mt-4 h-2 bg-white/10 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-indigo-500 to-purple-600"
-                      style={{
-                        width: `${(lang.count / (languages[0]?.count || 1)) * 100}%`,
-                      }}
-                    />
-                  </div>
+        {/* Languages + About Text */}
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          {/* Languages */}
+          {languages.length > 0 && (
+            <motion.div
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
+              custom={5}
+              variants={fadeUp}
+            >
+              <h3 className="text-xl font-bold mb-6">Top Languages</h3>
+              <div className="space-y-4">
+                {languages.slice(0, 5).map((lang, i) => {
+                  const pct = (lang.count / (languages[0]?.count || 1)) * 100;
+                  return (
+                    <div key={i}>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium">{lang.name}</span>
+                        <span className="text-xs text-muted-foreground">{lang.count} repos</span>
+                      </div>
+                      <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={isInView ? { width: `${pct}%` } : { width: 0 }}
+                          transition={{ delay: 0.8 + i * 0.1, duration: 0.8, ease: 'easeOut' }}
+                          className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+
+          {/* About Description */}
+          <motion.div
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            custom={6}
+            variants={fadeUp}
+            className="space-y-6"
+          >
+            <h3 className="text-xl font-bold">Crafting Digital Experiences</h3>
+            <p className="text-muted-foreground leading-relaxed">
+              I'm a passionate full-stack developer with expertise in modern web technologies and artificial intelligence.
+              My journey in tech has been driven by a love for solving complex problems and creating elegant, production-ready solutions.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              With experience in React, Node.js, Python, and AI/ML, I build scalable applications that make a real impact.
+              I actively contribute to open-source projects and am targeting GSoC to deepen my contributions to the developer community.
+            </p>
+
+            {/* Quick stats grid */}
+            <div className="grid grid-cols-2 gap-3 pt-2">
+              {[
+                { value: '4+', label: 'Projects Built' },
+                { value: '100%', label: 'Dedication' },
+                { value: 'GSoC', label: 'Aspirant 2025' },
+                { value: 'IEEE', label: 'Published' },
+              ].map((s, i) => (
+                <div key={i} className="glass-card p-4 text-center">
+                  <div className="text-xl font-bold gradient-text">{s.value}</div>
+                  <div className="text-xs text-muted-foreground mt-1">{s.label}</div>
                 </div>
               ))}
             </div>
-          </div>
-        )}
-
-        {/* About Text */}
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold">Crafting Digital Experiences</h3>
-            <p className="text-foreground/70 leading-relaxed">
-              I'm a passionate full-stack developer with expertise in modern web technologies and artificial intelligence. 
-              My journey in tech has been driven by a love for solving complex problems and creating elegant solutions.
-            </p>
-            <p className="text-foreground/70 leading-relaxed">
-              With experience in React, Node.js, Python, and AI/ML, I build scalable applications that make a real impact. 
-              I'm constantly learning and exploring new technologies to stay at the forefront of innovation.
-            </p>
-            <div className="pt-4">
-              <a
-                href={profile?.url || '#'}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white/10 border border-white/20 text-foreground font-medium hover:bg-white/20 transition-all duration-200"
-              >
-                View Full Profile →
-              </a>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="p-6 rounded-lg bg-white/5 border border-white/10">
-              <div className="text-4xl font-bold gradient-text mb-2">4+</div>
-              <div className="text-foreground/60">Projects Built</div>
-            </div>
-            <div className="p-6 rounded-lg bg-white/5 border border-white/10">
-              <div className="text-4xl font-bold gradient-text mb-2">100%</div>
-              <div className="text-foreground/60">Dedication</div>
-            </div>
-            <div className="p-6 rounded-lg bg-white/5 border border-white/10">
-              <div className="text-4xl font-bold gradient-text mb-2">∞</div>
-              <div className="text-foreground/60">Learning</div>
-            </div>
-            <div className="p-6 rounded-lg bg-white/5 border border-white/10">
-              <div className="text-4xl font-bold gradient-text mb-2">🚀</div>
-              <div className="text-foreground/60">Innovation</div>
-            </div>
-          </div>
+          </motion.div>
         </div>
       </div>
+
+      <div className="gradient-divider mt-24" />
     </section>
   );
 }

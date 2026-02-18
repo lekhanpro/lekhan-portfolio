@@ -1,5 +1,5 @@
 const GITHUB_API = 'https://api.github.com';
-const GITHUB_USERNAME = 'lekhanpro';
+const GITHUB_USERNAME = import.meta.env.VITE_GITHUB_USERNAME || 'lekhanpro';
 const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
 interface CacheEntry<T> {

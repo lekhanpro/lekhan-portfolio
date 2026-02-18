@@ -1,11 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
-import About from '@/components/About';
-import Skills from '@/components/Skills';
-import Projects from '@/components/Projects';
-import Experience from '@/components/Experience';
-import Contact from '@/components/Contact';
+import SEO from '@/components/SEO';
+import LoadingSkeleton, { CardSkeleton, TimelineSkeleton, SkillSkeleton } from '@/components/LoadingSkeleton';
 import Footer from '@/components/Footer';
 import {
   fetchProfile,
@@ -19,9 +16,18 @@ import {
   ExperienceEvent,
 } from '@/lib/github';
 
+// Lazy load heavy components for better initial page load
+const About = lazy(() => import('@/components/About'));
+const Skills = lazy(() => import('@/components/Skills'));
+const Projects = lazy(() => import('@/components/Projects'));
+const GSoCShowcase = lazy(() => import('@/components/GSoCShowcase'));
+const Experience = lazy(() => import('@/components/Experience'));
+const Contact = lazy(() => import('@/components/Contact'));
+
 export default function Home() {
   const [profile, setProfile] = useState<GitHubProfile | null>(null);
   const [projects, setProjects] = useState<GitHubRepository[]>([]);
+  const [allRepos, setAllRepos] = useState<GitHubRepository[]>([]);
   const [languages, setLanguages] = useState<LanguageStats[]>([]);
   const [experience, setExperience] = useState<ExperienceEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,20 +39,17 @@ export default function Home() {
         setIsLoading(true);
         setError(null);
 
-        // Fetch profile
         const profileData = await fetchProfile();
         setProfile(profileData);
 
-        // Fetch repositories
         const reposData = await fetchRepositories();
+        setAllRepos(reposData);
         const topRepos = getTopRepositories(reposData, 6);
         setProjects(topRepos);
 
-        // Get language stats
         const langStats = getLanguageStats(reposData);
         setLanguages(langStats);
 
-        // Generate experience timeline
         const experienceEvents = generateExperienceTimeline(profileData, reposData);
         setExperience(experienceEvents);
       } catch (err) {
@@ -61,25 +64,63 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background noise-overlay">
+      {/* SEO Meta Tags */}
+      <SEO
+        title={profile ? `${profile.name} | Full-Stack Developer & AI Enthusiast` : 'Lekhan H R | Full-Stack Developer & AI Enthusiast'}
+        description={profile?.bio || 'Portfolio of Lekhan H R, a Full-Stack Developer & AI Enthusiast specializing in React, TypeScript, Node.js, and AI/ML.'}
+        image={profile?.avatar || '/og-image.png'}
+        url="https://lekhan.vercel.app/"
+      />
+
       <Navigation />
 
-      {/* Main Content */}
-      <main className="pt-16">
+      <main id="main-content" className="pt-16">
         <Hero profile={profile} isLoading={isLoading} />
-        <About profile={profile} languages={languages} isLoading={isLoading} />
-        <Skills />
-        <Projects projects={projects} isLoading={isLoading} />
-        <Experience events={experience} isLoading={isLoading} />
-        <Contact profile={profile} isLoading={isLoading} />
+
+        {/* About Section with Lazy Loading */}
+        <Suspense fallback={<section id="about" className="py-20"><div className="container"><CardSkeleton count={1} /></div></section>}>
+          <About profile={profile} languages={languages} isLoading={isLoading} />
+        </Suspense>
+
+        {/* Skills Section with Lazy Loading */}
+        <Suspense fallback={<section id="skills" className="py-20"><div className="container"><SkillSkeleton /></div></section>}>
+          <Skills />
+        </Suspense>
+
+        {/* Projects Section with Lazy Loading */}
+        <Suspense fallback={<section id="projects" className="py-20"><div className="container"><CardSkeleton count={3} /></div></section>}>
+          <Projects projects={projects} isLoading={isLoading} />
+        </Suspense>
+
+        {/* GSoC Showcase with Lazy Loading */}
+        <Suspense fallback={<section id="opensource" className="py-20"><div className="container"><CardSkeleton count={2} /></div></section>}>
+          <GSoCShowcase profile={profile} projects={allRepos} isLoading={isLoading} />
+        </Suspense>
+
+        {/* Experience Section with Lazy Loading */}
+        <Suspense fallback={<section id="experience" className="py-20"><div className="container"><TimelineSkeleton count={4} /></div></section>}>
+          <Experience events={experience} isLoading={isLoading} />
+        </Suspense>
+
+        {/* Contact Section with Lazy Loading */}
+        <Suspense fallback={<section id="contact" className="py-20"><div className="container"><CardSkeleton count={1} /></div></section>}>
+          <Contact profile={profile} isLoading={isLoading} />
+        </Suspense>
       </main>
 
       <Footer />
 
-      {/* Error Toast */}
+      {/* Error Toast - Improved accessibility */}
       {error && (
-        <div className="fixed bottom-4 right-4 p-4 rounded-lg bg-red-500/20 border border-red-500/50 text-red-200 text-sm">
-          {error}
+        <div
+          className="fixed bottom-4 right-4 p-4 rounded-xl glass border border-red-500/20 text-red-300 text-sm max-w-sm shadow-lg shadow-red-500/10 z-50"
+          role="alert"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          <p className="font-medium mb-1">Error</p>
+          <p className="text-red-300/80 text-xs">{error}</p>
         </div>
       )}
     </div>
