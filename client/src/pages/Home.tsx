@@ -1,6 +1,7 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
+import Marquee from '@/components/Marquee';
 import SEO from '@/components/SEO';
 import LoadingSkeleton, { CardSkeleton, TimelineSkeleton, SkillSkeleton } from '@/components/LoadingSkeleton';
 import Footer from '@/components/Footer';
@@ -78,6 +79,8 @@ export default function Home() {
       <main id="main-content" className="pt-16">
         <Hero profile={profile} isLoading={isLoading} />
 
+        <Marquee />
+
         {/* About Section with Lazy Loading */}
         <Suspense fallback={<section id="about" className="py-20"><div className="container"><CardSkeleton count={1} /></div></section>}>
           <About profile={profile} languages={languages} isLoading={isLoading} />
@@ -114,7 +117,7 @@ export default function Home() {
       {/* Error Toast - Improved accessibility */}
       {error && (
         <div
-          className="fixed bottom-4 right-4 p-4 rounded-xl glass border border-red-500/20 text-red-300 text-sm max-w-sm shadow-lg shadow-red-500/10 z-50"
+          className="fixed bottom-4 right-4 p-4 rounded-xl bg-[#141414] border border-[#333] text-red-300 text-sm max-w-sm shadow-lg z-50"
           role="alert"
           aria-live="polite"
           aria-atomic="true"

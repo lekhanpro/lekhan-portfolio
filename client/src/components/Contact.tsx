@@ -42,35 +42,31 @@ export default function Contact({ profile, isLoading }: ContactProps) {
       icon: Github,
       label: 'GitHub',
       href: profile?.url || 'https://github.com/lekhanpro',
-      hoverColor: 'hover:border-white/30 hover:text-white',
     },
     {
       icon: Mail,
       label: 'Email',
       href: `mailto:${profile?.email || 'contact@example.com'}`,
-      hoverColor: 'hover:border-red-400/30 hover:text-red-400',
     },
     {
       icon: Linkedin,
       label: 'LinkedIn',
       href: '#',
-      hoverColor: 'hover:border-blue-400/30 hover:text-blue-400',
     },
     {
       icon: Twitter,
       label: 'Twitter',
       href: profile?.twitter ? `https://twitter.com/${profile.twitter}` : '#',
-      hoverColor: 'hover:border-sky-400/30 hover:text-sky-400',
     },
   ];
 
   if (isLoading) {
     return (
-      <section id="contact" className="py-24">
+      <section id="contact" className="py-28">
         <div className="container">
           <div className="animate-pulse space-y-6">
-            <div className="h-12 bg-white/5 rounded-2xl w-48 mx-auto" />
-            <div className="h-60 bg-white/5 rounded-2xl max-w-4xl mx-auto" />
+            <div className="h-12 bg-[#141414] rounded-2xl w-48 mx-auto" />
+            <div className="h-60 bg-[#141414] rounded-2xl max-w-4xl mx-auto" />
           </div>
         </div>
       </section>
@@ -78,10 +74,8 @@ export default function Contact({ profile, isLoading }: ContactProps) {
   }
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden" ref={ref}>
-      <div className="orb orb-primary w-[400px] h-[400px] -bottom-20 -right-32" />
-
-      <div className="container relative z-10">
+    <section id="contact" className="py-28 relative" ref={ref}>
+      <div className="container">
         {/* Section Header */}
         <motion.div
           initial="hidden"
@@ -90,10 +84,12 @@ export default function Contact({ profile, isLoading }: ContactProps) {
           variants={fadeUp}
           className="mb-16 text-center max-w-2xl mx-auto"
         >
-          <span className="text-sm font-semibold text-indigo-400 uppercase tracking-widest mb-3 block">
+          <span className="text-sm font-semibold text-[#888] uppercase tracking-widest mb-3 block">
             Get in touch
           </span>
-          <h2 className="section-heading">Let's Connect</h2>
+          <h2 className="section-heading">
+            Let's <span className="font-serif italic">Connect</span>
+          </h2>
           <p className="section-subtitle mx-auto">
             I'm always interested in hearing about new projects, opportunities, and open-source collaborations.
           </p>
@@ -114,27 +110,27 @@ export default function Contact({ profile, isLoading }: ContactProps) {
                   href={`mailto:${profile.email}`}
                   className="flex items-center gap-4 group"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500/20 to-pink-500/20 flex items-center justify-center flex-shrink-0 group-hover:shadow-lg group-hover:shadow-red-500/10 transition-shadow">
-                    <Mail size={18} className="text-foreground/80" />
+                  <div className="w-10 h-10 rounded-xl bg-[#1a1a1a] border border-[#222] flex items-center justify-center flex-shrink-0">
+                    <Mail size={18} className="text-[#888]" />
                   </div>
                   <div>
-                    <p className="text-xs text-muted-foreground mb-0.5">Email</p>
-                    <p className="text-sm font-medium group-hover:text-indigo-300 transition-colors">
+                    <p className="text-xs text-[#666] mb-0.5">Email</p>
+                    <p className="text-sm font-medium text-[#ededed] group-hover:text-white transition-colors">
                       {profile.email}
                     </p>
                   </div>
-                  <ArrowUpRight size={14} className="ml-auto text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ArrowUpRight size={14} className="ml-auto text-[#555] opacity-0 group-hover:opacity-100 transition-opacity" />
                 </a>
               )}
 
               {profile?.location && (
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-green-500/20 flex items-center justify-center flex-shrink-0">
-                    <MapPin size={18} className="text-foreground/80" />
+                  <div className="w-10 h-10 rounded-xl bg-[#1a1a1a] border border-[#222] flex items-center justify-center flex-shrink-0">
+                    <MapPin size={18} className="text-[#888]" />
                   </div>
                   <div>
-                    <p className="text-xs text-muted-foreground mb-0.5">Location</p>
-                    <p className="text-sm font-medium">{profile.location}</p>
+                    <p className="text-xs text-[#666] mb-0.5">Location</p>
+                    <p className="text-sm font-medium text-[#ededed]">{profile.location}</p>
                   </div>
                 </div>
               )}
@@ -146,23 +142,23 @@ export default function Contact({ profile, isLoading }: ContactProps) {
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 group"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center flex-shrink-0 group-hover:shadow-lg group-hover:shadow-blue-500/10 transition-shadow">
-                    <Globe size={18} className="text-foreground/80" />
+                  <div className="w-10 h-10 rounded-xl bg-[#1a1a1a] border border-[#222] flex items-center justify-center flex-shrink-0">
+                    <Globe size={18} className="text-[#888]" />
                   </div>
                   <div>
-                    <p className="text-xs text-muted-foreground mb-0.5">Website</p>
-                    <p className="text-sm font-medium group-hover:text-indigo-300 transition-colors">
+                    <p className="text-xs text-[#666] mb-0.5">Website</p>
+                    <p className="text-sm font-medium text-[#ededed] group-hover:text-white transition-colors">
                       {profile.blog.replace(/^https?:\/\//, '')}
                     </p>
                   </div>
-                  <ArrowUpRight size={14} className="ml-auto text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ArrowUpRight size={14} className="ml-auto text-[#555] opacity-0 group-hover:opacity-100 transition-opacity" />
                 </a>
               )}
             </div>
 
             {/* Social Links */}
             <div>
-              <h4 className="text-sm font-semibold mb-4 text-muted-foreground uppercase tracking-wider">
+              <h4 className="text-sm font-semibold mb-4 text-[#666] uppercase tracking-wider">
                 Socials
               </h4>
               <div className="flex gap-3">
@@ -174,7 +170,7 @@ export default function Contact({ profile, isLoading }: ContactProps) {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`w-11 h-11 rounded-xl glass flex items-center justify-center text-muted-foreground transition-all duration-300 ${link.hoverColor}`}
+                      className="w-11 h-11 rounded-xl bg-[#141414] border border-[#222] flex items-center justify-center text-[#888] hover:text-white hover:border-[#333] transition-all duration-300"
                       title={link.label}
                     >
                       <Icon size={18} />
@@ -192,45 +188,45 @@ export default function Contact({ profile, isLoading }: ContactProps) {
             custom={2}
             variants={fadeUp}
           >
-            <div className="glass-card p-8">
-              <h3 className="text-lg font-bold mb-6">Send a Message</h3>
+            <div className="solid-card p-8">
+              <h3 className="text-lg font-bold mb-6 text-white">Send a Message</h3>
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-[#666] uppercase tracking-wider mb-2">
                     Name
                   </label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 transition-all text-sm"
+                    className="w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#222] text-[#ededed] placeholder-[#555] focus:outline-none focus:border-[#444] focus:ring-1 focus:ring-[#333] transition-all text-sm"
                     placeholder="Your name"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-[#666] uppercase tracking-wider mb-2">
                     Email
                   </label>
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 transition-all text-sm"
+                    className="w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#222] text-[#ededed] placeholder-[#555] focus:outline-none focus:border-[#444] focus:ring-1 focus:ring-[#333] transition-all text-sm"
                     placeholder="your@email.com"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-[#666] uppercase tracking-wider mb-2">
                     Message
                   </label>
                   <textarea
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 transition-all text-sm resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#222] text-[#ededed] placeholder-[#555] focus:outline-none focus:border-[#444] focus:ring-1 focus:ring-[#333] transition-all text-sm resize-none"
                     placeholder="Tell me about your project or opportunity..."
                     rows={4}
                     required
@@ -240,7 +236,7 @@ export default function Contact({ profile, isLoading }: ContactProps) {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold hover:shadow-xl hover:shadow-indigo-500/25 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5"
+                  className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-white text-[#0a0a0a] font-semibold hover:bg-[#ededed] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5"
                 >
                   <Send size={16} />
                   {isSubmitting ? 'Sending...' : 'Send Message'}

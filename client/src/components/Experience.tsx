@@ -1,7 +1,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { ExperienceEvent } from '@/lib/github';
-import { GraduationCap, FileText, Briefcase } from 'lucide-react';
+import { GraduationCap, FileText } from 'lucide-react';
 
 interface ExperienceProps {
   events: ExperienceEvent[];
@@ -23,13 +23,13 @@ export default function Experience({ events, isLoading }: ExperienceProps) {
 
   if (isLoading) {
     return (
-      <section id="experience" className="py-24">
+      <section id="experience" className="py-28">
         <div className="container">
           <div className="animate-pulse space-y-6">
-            <div className="h-12 bg-white/5 rounded-2xl w-52" />
+            <div className="h-12 bg-[#141414] rounded-2xl w-52" />
             <div className="space-y-6 mt-8">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-28 bg-white/5 rounded-2xl" />
+                <div key={i} className="h-28 bg-[#141414] rounded-2xl" />
               ))}
             </div>
           </div>
@@ -39,10 +39,8 @@ export default function Experience({ events, isLoading }: ExperienceProps) {
   }
 
   return (
-    <section id="experience" className="py-24 relative overflow-hidden" ref={ref}>
-      <div className="orb orb-secondary w-[350px] h-[350px] top-20 -left-32" />
-
-      <div className="container relative z-10">
+    <section id="experience" className="py-28 relative" ref={ref}>
+      <div className="container">
         {/* Section Header */}
         <motion.div
           initial="hidden"
@@ -51,10 +49,12 @@ export default function Experience({ events, isLoading }: ExperienceProps) {
           variants={fadeUp}
           className="mb-16"
         >
-          <span className="text-sm font-semibold text-indigo-400 uppercase tracking-widest mb-3 block">
+          <span className="text-sm font-semibold text-[#888] uppercase tracking-widest mb-3 block">
             My journey
           </span>
-          <h2 className="section-heading">Experience Timeline</h2>
+          <h2 className="section-heading">
+            Experience <span className="font-serif italic">Timeline</span>
+          </h2>
           <p className="section-subtitle">
             Key milestones and achievements tracked through my development journey
           </p>
@@ -63,15 +63,8 @@ export default function Experience({ events, isLoading }: ExperienceProps) {
         {/* Vertical Timeline */}
         {events.length > 0 && (
           <div className="relative max-w-3xl mx-auto">
-            {/* Timeline line */}
-            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px">
-              <motion.div
-                initial={{ height: 0 }}
-                animate={isInView ? { height: '100%' } : { height: 0 }}
-                transition={{ duration: 1.5, ease: 'easeOut', delay: 0.3 }}
-                className="w-full bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500"
-              />
-            </div>
+            {/* Timeline line — simple thin line */}
+            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-[#222]" />
 
             <div className="space-y-12">
               {events.map((event, index) => {
@@ -89,7 +82,7 @@ export default function Experience({ events, isLoading }: ExperienceProps) {
                   >
                     {/* Timeline dot */}
                     <div className="absolute left-6 md:left-1/2 -translate-x-1/2 z-10">
-                      <div className="w-3 h-3 rounded-full bg-gradient-to-r from-indigo-400 to-purple-500 ring-4 ring-background" />
+                      <div className="w-3 h-3 rounded-full bg-white ring-4 ring-[#0a0a0a]" />
                     </div>
 
                     {/* Card */}
@@ -98,12 +91,12 @@ export default function Experience({ events, isLoading }: ExperienceProps) {
                         isLeft ? 'md:pr-8' : 'md:pl-8'
                       }`}
                     >
-                      <div className={`glass-card p-6 ${isLeft ? 'md:text-right' : ''}`}>
-                        <span className="text-xs font-mono text-indigo-400 mb-2 block">
+                      <div className={`solid-card p-6 ${isLeft ? 'md:text-right' : ''}`}>
+                        <span className="text-xs font-mono text-[#666] mb-2 block">
                           {event.date}
                         </span>
-                        <h3 className="text-lg font-bold mb-1">{event.title}</h3>
-                        <p className="text-sm text-muted-foreground">{event.detail}</p>
+                        <h3 className="text-lg font-bold text-white mb-1">{event.title}</h3>
+                        <p className="text-sm text-[#888]">{event.detail}</p>
                       </div>
                     </div>
                   </motion.div>
@@ -120,14 +113,16 @@ export default function Experience({ events, isLoading }: ExperienceProps) {
             animate={isInView ? 'visible' : 'hidden'}
             custom={events.length + 2}
             variants={fadeUp}
-            className="glass-card p-8"
+            className="solid-card p-8"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center mb-4">
-              <GraduationCap size={20} className="text-foreground/80" />
+            <div className="w-10 h-10 rounded-xl bg-[#1a1a1a] border border-[#222] flex items-center justify-center mb-4">
+              <GraduationCap size={20} className="text-[#888]" />
             </div>
-            <h3 className="text-xl font-bold mb-2 gradient-text">Education</h3>
-            <p className="font-semibold mb-1">DBIT Student</p>
-            <p className="text-sm text-muted-foreground">
+            <h3 className="text-xl font-bold mb-2 text-white">
+              <span className="font-serif italic">Education</span>
+            </h3>
+            <p className="font-semibold mb-1 text-[#ccc]">DBIT Student</p>
+            <p className="text-sm text-[#888]">
               Pursuing studies in Computer Science with focus on full-stack development and AI/ML
             </p>
           </motion.div>
@@ -137,21 +132,23 @@ export default function Experience({ events, isLoading }: ExperienceProps) {
             animate={isInView ? 'visible' : 'hidden'}
             custom={events.length + 3}
             variants={fadeUp}
-            className="glass-card p-8"
+            className="solid-card p-8"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center mb-4">
-              <FileText size={20} className="text-foreground/80" />
+            <div className="w-10 h-10 rounded-xl bg-[#1a1a1a] border border-[#222] flex items-center justify-center mb-4">
+              <FileText size={20} className="text-[#888]" />
             </div>
-            <h3 className="text-xl font-bold mb-2 gradient-text">Publications</h3>
-            <p className="font-semibold mb-1">IEEE Published</p>
-            <p className="text-sm text-muted-foreground">
+            <h3 className="text-xl font-bold mb-2 text-white">
+              <span className="font-serif italic">Publications</span>
+            </h3>
+            <p className="font-semibold mb-1 text-[#ccc]">IEEE Published</p>
+            <p className="text-sm text-[#888]">
               Research contributions published in IEEE conferences and journals
             </p>
           </motion.div>
         </div>
       </div>
 
-      <div className="gradient-divider mt-24" />
+      <div className="gradient-divider mt-28" />
     </section>
   );
 }

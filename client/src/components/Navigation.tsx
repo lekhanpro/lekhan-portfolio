@@ -38,7 +38,6 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle keyboard navigation in mobile menu
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
@@ -63,10 +62,10 @@ export default function Navigation() {
     <motion.nav
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
       className={`fixed top-0 w-full z-50 transition-all duration-500 ${
         scrolled
-          ? 'glass-strong shadow-lg shadow-black/10'
+          ? 'bg-[#0a0a0a]/95 border-b border-[#222]'
           : 'bg-transparent'
       }`}
     >
@@ -76,10 +75,10 @@ export default function Navigation() {
           onClick={() => handleNavClick('#home')}
           className="flex items-center gap-2.5 group"
         >
-          <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/25 group-hover:shadow-indigo-500/40 transition-shadow">
-            <span className="text-white font-bold text-lg">L</span>
-          </div>
-          <span className="font-bold text-lg gradient-text hidden sm:inline">
+          <span className="font-serif text-2xl font-bold text-white tracking-tight">
+            L
+          </span>
+          <span className="font-medium text-lg text-[#ededed] hidden sm:inline tracking-tight">
             Lekhan
           </span>
         </button>
@@ -94,16 +93,17 @@ export default function Navigation() {
                 onClick={() => handleNavClick(item.href)}
                 className={`relative px-3.5 py-2 text-sm font-medium transition-colors duration-300 rounded-lg ${
                   isActive
-                    ? 'text-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? 'text-white'
+                    : 'text-[#888] hover:text-[#ededed]'
                 }`}
               >
                 {item.label}
                 {isActive && (
                   <motion.div
                     layoutId="activeNav"
-                    className="absolute inset-0 rounded-lg bg-white/[0.06] border border-white/10"
+                    className="absolute inset-0 rounded-lg bg-[#1a1a1a] border border-[#222]"
                     transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
+                    style={{ zIndex: -1 }}
                   />
                 )}
               </button>
@@ -115,7 +115,7 @@ export default function Navigation() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => handleNavClick('#contact')}
-            className="hidden md:inline-flex items-center gap-1.5 px-5 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all duration-300 hover:-translate-y-0.5"
+            className="hidden md:inline-flex items-center gap-1.5 px-5 py-2 rounded-lg border border-[#333] text-[#ededed] text-sm font-medium hover:bg-[#1a1a1a] hover:border-[#444] transition-all duration-300"
           >
             Get in Touch
             <ArrowUpRight size={14} />
@@ -123,7 +123,7 @@ export default function Navigation() {
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
+            className="lg:hidden p-2 rounded-lg hover:bg-[#1a1a1a] transition-colors"
             aria-label="Toggle menu"
           >
             {isOpen ? <X size={22} /> : <Menu size={22} />}
@@ -138,8 +138,8 @@ export default function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:hidden overflow-hidden glass-strong border-t border-white/5"
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as const }}
+            className="lg:hidden overflow-hidden bg-[#0a0a0a] border-t border-[#222]"
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation menu"
@@ -154,8 +154,8 @@ export default function Navigation() {
                   onClick={() => handleNavClick(item.href)}
                   className={`px-4 py-3 text-sm font-medium rounded-xl text-left transition-all ${
                     activeSection === item.href.replace('#', '')
-                      ? 'text-foreground bg-white/[0.06]'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-white/[0.04]'
+                      ? 'text-white bg-[#1a1a1a]'
+                      : 'text-[#888] hover:text-[#ededed] hover:bg-[#141414]'
                   }`}
                   role="menuitem"
                   aria-current={activeSection === item.href.replace('#', '') ? 'page' : undefined}
@@ -165,7 +165,7 @@ export default function Navigation() {
               ))}
               <button
                 onClick={() => handleNavClick('#contact')}
-                className="mt-2 px-4 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-semibold text-center hover:shadow-lg hover:shadow-indigo-500/30 transition-all"
+                className="mt-2 px-4 py-3 rounded-xl border border-[#333] text-[#ededed] text-sm font-semibold text-center hover:bg-[#1a1a1a] transition-all"
                 aria-label="Navigate to contact section"
               >
                 Get in Touch

@@ -24,11 +24,11 @@ export default function GSoCShowcase({ profile, projects, isLoading }: GSoCShowc
 
   if (isLoading) {
     return (
-      <section id="opensource" className="py-24">
+      <section id="opensource" className="py-28">
         <div className="container">
           <div className="animate-pulse space-y-6">
-            <div className="h-12 bg-white/5 rounded-2xl w-64" />
-            <div className="h-60 bg-white/5 rounded-2xl" />
+            <div className="h-12 bg-[#141414] rounded-2xl w-64" />
+            <div className="h-60 bg-[#141414] rounded-2xl" />
           </div>
         </div>
       </section>
@@ -44,34 +44,27 @@ export default function GSoCShowcase({ profile, projects, isLoading }: GSoCShowc
       icon: Github,
       label: 'Public Repos',
       value: profile?.repos.toString() || '0',
-      gradient: 'from-indigo-500/20 to-blue-500/20',
     },
     {
       icon: Star,
       label: 'Total Stars',
       value: totalStars.toString(),
-      gradient: 'from-amber-500/20 to-yellow-500/20',
     },
     {
       icon: GitFork,
       label: 'Total Forks',
       value: totalForks.toString(),
-      gradient: 'from-green-500/20 to-emerald-500/20',
     },
     {
       icon: GitPullRequest,
       label: 'Contributions',
       value: 'Active',
-      gradient: 'from-purple-500/20 to-pink-500/20',
     },
   ];
 
   return (
-    <section id="opensource" className="py-24 relative overflow-hidden" ref={ref}>
-      <div className="orb orb-primary w-[400px] h-[400px] -top-20 -left-32" />
-      <div className="orb orb-accent w-[300px] h-[300px] bottom-0 right-0" />
-
-      <div className="container relative z-10">
+    <section id="opensource" className="py-28 relative" ref={ref}>
+      <div className="container">
         {/* Section Header */}
         <motion.div
           initial="hidden"
@@ -80,12 +73,11 @@ export default function GSoCShowcase({ profile, projects, isLoading }: GSoCShowc
           variants={fadeUp}
           className="mb-16"
         >
-          <span className="text-sm font-semibold text-indigo-400 uppercase tracking-widest mb-3 block">
+          <span className="text-sm font-semibold text-[#888] uppercase tracking-widest mb-3 block">
             Open Source & GSoC
           </span>
           <h2 className="section-heading">
-            Open Source{' '}
-            <span className="gradient-text">Contributions</span>
+            Open Source <span className="font-serif italic">Contributions</span>
           </h2>
           <p className="section-subtitle">
             Actively contributing to the open-source ecosystem and preparing for Google Summer of Code
@@ -98,18 +90,17 @@ export default function GSoCShowcase({ profile, projects, isLoading }: GSoCShowc
           animate={isInView ? 'visible' : 'hidden'}
           custom={1}
           variants={fadeUp}
-          className="glass-card p-8 mb-12 relative overflow-hidden"
+          className="solid-card-lg p-8 mb-12"
         >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-indigo-500/10 to-transparent rounded-bl-full" />
-          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+            <div className="w-14 h-14 rounded-2xl bg-[#1a1a1a] border border-[#222] flex items-center justify-center flex-shrink-0">
               <Trophy size={28} className="text-white" />
             </div>
             <div className="flex-1">
-              <h3 className="text-2xl font-bold mb-2">
-                GSoC 2025 Aspirant
+              <h3 className="text-2xl font-bold mb-2 text-white">
+                GSoC 2025 <span className="font-serif italic">Aspirant</span>
               </h3>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-[#888] leading-relaxed">
                 Actively exploring organizations and building expertise in open-source development.
                 Focused on contributing to projects that align with my skills in full-stack web development,
                 AI/ML tooling, and developer experience.
@@ -119,7 +110,7 @@ export default function GSoCShowcase({ profile, projects, isLoading }: GSoCShowc
               href="https://github.com/lekhanpro"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold text-sm hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-300 hover:-translate-y-0.5 flex-shrink-0"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-[#0a0a0a] font-semibold text-sm hover:bg-[#ededed] transition-all duration-300 hover:-translate-y-0.5 flex-shrink-0"
             >
               <Github size={16} />
               View Profile
@@ -139,13 +130,13 @@ export default function GSoCShowcase({ profile, projects, isLoading }: GSoCShowc
                 animate={isInView ? 'visible' : 'hidden'}
                 custom={i + 2}
                 variants={fadeUp}
-                className="glass-card p-6 text-center"
+                className="solid-card p-6 text-center"
               >
-                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center mx-auto mb-3`}>
-                  <Icon size={20} className="text-foreground/80" />
+                <div className="w-10 h-10 rounded-xl bg-[#1a1a1a] border border-[#222] flex items-center justify-center mx-auto mb-3">
+                  <Icon size={20} className="text-[#888]" />
                 </div>
-                <div className="text-2xl font-bold mb-1">{stat.value}</div>
-                <div className="text-xs text-muted-foreground">{stat.label}</div>
+                <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
+                <div className="text-xs text-[#888]">{stat.label}</div>
               </motion.div>
             );
           })}
@@ -159,28 +150,28 @@ export default function GSoCShowcase({ profile, projects, isLoading }: GSoCShowc
             custom={6}
             variants={fadeUp}
           >
-            <h3 className="text-lg font-semibold mb-4 text-muted-foreground">
+            <h3 className="text-lg font-semibold mb-4 text-[#888]">
               Featured Repository
             </h3>
-            <div className="glass-card p-6 group">
+            <div className="solid-card p-6 group">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h4 className="text-xl font-bold mb-2 group-hover:text-indigo-300 transition-colors">
+                  <h4 className="text-xl font-bold mb-2 text-white group-hover:text-[#ccc] transition-colors">
                     {topProject.name}
                   </h4>
-                  <p className="text-sm text-muted-foreground leading-relaxed max-w-xl">
+                  <p className="text-sm text-[#888] leading-relaxed max-w-xl">
                     {topProject.description}
                   </p>
-                  <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-4 mt-3 text-xs text-[#666]">
                     <span className="flex items-center gap-1">
-                      <Star size={13} className="text-amber-400" />
+                      <Star size={13} className="text-[#888]" />
                       {topProject.stars} stars
                     </span>
                     <span className="flex items-center gap-1">
                       <GitFork size={13} />
                       {topProject.forks} forks
                     </span>
-                    <span className="px-2 py-0.5 rounded-md bg-white/[0.06] border border-white/[0.08] text-[10px] uppercase font-semibold tracking-wider">
+                    <span className="px-2 py-0.5 rounded-md bg-[#1a1a1a] border border-[#222] text-[10px] uppercase font-semibold tracking-wider text-[#888]">
                       {topProject.language}
                     </span>
                   </div>
@@ -189,7 +180,7 @@ export default function GSoCShowcase({ profile, projects, isLoading }: GSoCShowc
                   href={topProject.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl glass text-sm font-medium hover:bg-white/10 transition-all flex-shrink-0"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#333] text-[#ededed] text-sm font-medium hover:bg-[#1a1a1a] hover:border-[#444] transition-all flex-shrink-0"
                 >
                   <Github size={16} />
                   View Repo
@@ -211,7 +202,7 @@ export default function GSoCShowcase({ profile, projects, isLoading }: GSoCShowc
             href={`https://github.com/${profile?.login || 'lekhanpro'}?tab=repositories`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1.5"
+            className="text-sm text-[#666] hover:text-[#ededed] transition-colors inline-flex items-center gap-1.5"
           >
             View all repositories on GitHub
             <ExternalLink size={13} />
@@ -219,7 +210,7 @@ export default function GSoCShowcase({ profile, projects, isLoading }: GSoCShowc
         </motion.div>
       </div>
 
-      <div className="gradient-divider mt-24" />
+      <div className="gradient-divider mt-28" />
     </section>
   );
 }
