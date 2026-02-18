@@ -17,6 +17,58 @@ const fadeUp = {
   }),
 };
 
+// Rich descriptions for key projects (override weak/missing GitHub descriptions)
+const PROJECT_OVERRIDES: Record<string, { description: string; tech?: string[] }> = {
+  'chess-post-game-analyst': {
+    description: 'AI-powered chess game analysis with Stockfish engine integration. Detects blunders, missed tactics, and provides personalized coaching recommendations with move-by-move evaluation.',
+    tech: ['Python', 'Stockfish', 'AI/ML'],
+  },
+  'CodeGuard': {
+    description: 'Real-time code quality monitoring platform that analyzes codebases for security vulnerabilities, code smells, and best practice violations. Features automated suggestions and CI/CD integration.',
+    tech: ['TypeScript', 'React', 'Node.js'],
+  },
+  'spendwisev2': {
+    description: 'Full-featured personal finance tracker with expense categorization, budget planning, and visual analytics. Built with a focus on clean UX and real-time data sync.',
+    tech: ['TypeScript', 'React', 'Tailwind'],
+  },
+  'scholarsync': {
+    description: 'Academic collaboration platform connecting students for group study, resource sharing, and project coordination. Features real-time chat and document management.',
+    tech: ['TypeScript', 'React', 'Node.js'],
+  },
+  'chaos-dock': {
+    description: 'Lightweight container orchestration tool written in Go for managing Docker containers with chaos engineering principles — inject failures, test resilience.',
+    tech: ['Go', 'Docker', 'DevOps'],
+  },
+  'curesync': {
+    description: 'Healthcare platform streamlining patient-doctor communication with appointment scheduling, medical records management, and telemedicine integration.',
+    tech: ['TypeScript', 'React', 'Firebase'],
+  },
+  'perfpatrol': {
+    description: 'Web performance monitoring tool that tracks Core Web Vitals, Lighthouse scores, and page load metrics. Alerts on performance regressions across deployments.',
+    tech: ['TypeScript', 'React', 'Analytics'],
+  },
+  'gov-evoting-portal': {
+    description: 'Secure electronic voting system with voter authentication, encrypted ballot submission, and real-time result tallying. Designed for government-scale elections.',
+    tech: ['JavaScript', 'Node.js', 'Security'],
+  },
+  'edge-ai-android': {
+    description: 'On-device AI inference engine for Android — runs ML models locally without internet. Optimized for low-latency edge computing on mobile devices.',
+    tech: ['TypeScript', 'AI/ML', 'Mobile'],
+  },
+  'llama-offline-app': {
+    description: 'Offline-capable LLM interface that runs Llama models locally. Features conversation memory, prompt templates, and zero-cloud-dependency architecture.',
+    tech: ['JavaScript', 'AI/ML', 'LLM'],
+  },
+  'student-portal': {
+    description: 'Role-based academic portal with distinct interfaces for students, faculty, and admins. Features attendance tracking, grade management, and announcement system.',
+    tech: ['EJS', 'Express.js', 'Bootstrap'],
+  },
+  'lekhan-portfolio': {
+    description: 'This portfolio — editorial monochrome design with React 19, Vite 7, Tailwind CSS 4, Framer Motion, and live GitHub API integration.',
+    tech: ['TypeScript', 'React', 'Tailwind'],
+  },
+};
+
 function getTechStack(project: GitHubRepository): string[] {
   const stack: string[] = [];
   if (project.language) stack.push(project.language);
@@ -48,7 +100,9 @@ function ProjectCard({
   index: number;
   isInView: boolean;
 }) {
-  const techStack = getTechStack(project);
+  const override = PROJECT_OVERRIDES[project.name];
+  const techStack = override?.tech || getTechStack(project);
+  const description = override?.description || project.description || 'A custom built project showcasing modern development practices.';
 
   return (
     <motion.div
@@ -80,7 +134,7 @@ function ProjectCard({
 
         {/* Description */}
         <p className="text-sm text-[#888] leading-relaxed mb-5 flex-grow line-clamp-3">
-          {project.description || 'A custom built project showcasing modern development practices.'}
+          {description}
         </p>
 
         {/* Stats Row */}

@@ -20,22 +20,22 @@ const skillCategories = [
   {
     category: 'Frontend',
     icon: Monitor,
-    skills: ['React / Next.js', 'TypeScript', 'Tailwind CSS', 'React Native'],
+    skills: ['React / Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
   },
   {
     category: 'Backend',
     icon: Server,
-    skills: ['Node.js / Express', 'Python / FastAPI', 'REST & GraphQL', 'Firebase / Supabase'],
+    skills: ['Node.js / Express', 'Python / FastAPI', 'Go', 'Firebase / Supabase'],
   },
   {
     category: 'AI & Data',
     icon: Brain,
-    skills: ['Machine Learning', 'Deep Learning', 'Data Analysis', 'LLMs / RAG'],
+    skills: ['Edge AI / On-Device ML', 'LLMs / Llama', 'Stockfish Integration', 'Data Analysis'],
   },
   {
     category: 'Tools & DevOps',
     icon: Wrench,
-    skills: ['Git / GitHub', 'Docker', 'AWS / Cloud', 'CI/CD Pipelines'],
+    skills: ['Git / GitHub', 'Docker', 'Vercel / Cloud', 'CI/CD Pipelines'],
   },
 ];
 

@@ -2,6 +2,8 @@ import { useEffect, useState, lazy, Suspense } from 'react';
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
 import Marquee from '@/components/Marquee';
+import FeatureGrid from '@/components/FeatureGrid';
+import CallToAction from '@/components/CallToAction';
 import SEO from '@/components/SEO';
 import LoadingSkeleton, { CardSkeleton, TimelineSkeleton, SkillSkeleton } from '@/components/LoadingSkeleton';
 import Footer from '@/components/Footer';
@@ -81,6 +83,8 @@ export default function Home() {
 
         <Marquee />
 
+        <FeatureGrid />
+
         {/* About Section with Lazy Loading */}
         <Suspense fallback={<section id="about" className="py-20"><div className="container"><CardSkeleton count={1} /></div></section>}>
           <About profile={profile} languages={languages} isLoading={isLoading} />
@@ -110,6 +114,7 @@ export default function Home() {
         <Suspense fallback={<section id="contact" className="py-20"><div className="container"><CardSkeleton count={1} /></div></section>}>
           <Contact profile={profile} isLoading={isLoading} />
         </Suspense>
+        <CallToAction />
       </main>
 
       <Footer />

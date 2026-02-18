@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { GitHubProfile } from '@/lib/github';
-import { ArrowRight, Github, Download, ChevronDown } from 'lucide-react';
+import { ArrowRight, Github, ChevronDown, Mail } from 'lucide-react';
 
 interface HeroProps {
   profile: GitHubProfile | null;
@@ -22,15 +22,15 @@ const item = {
 };
 
 export default function Hero({ profile, isLoading }: HeroProps) {
-  const [displayedText, setDisplayedText] = useState('');
-  const fullText = 'Full-Stack Developer & AI Enthusiast';
+  const [displayedRole, setDisplayedRole] = useState('');
+  const fullRole = 'Full-Stack Developer & AI Enthusiast';
 
   useEffect(() => {
     if (isLoading) return;
     let index = 0;
     const interval = setInterval(() => {
-      if (index <= fullText.length) {
-        setDisplayedText(fullText.slice(0, index));
+      if (index <= fullRole.length) {
+        setDisplayedRole(fullRole.slice(0, index));
         index++;
       } else {
         clearInterval(interval);
@@ -45,7 +45,7 @@ export default function Hero({ profile, isLoading }: HeroProps) {
         <div className="container relative z-10 pt-24">
           <div className="animate-pulse space-y-6">
             <div className="h-6 bg-[#141414] rounded-full w-48" />
-            <div className="h-16 bg-[#141414] rounded-2xl w-3/4" />
+            <div className="h-20 bg-[#141414] rounded-2xl w-3/4" />
             <div className="h-8 bg-[#141414] rounded-xl w-1/2" />
             <div className="h-5 bg-[#141414] rounded-lg w-2/3" />
           </div>
@@ -56,39 +56,42 @@ export default function Hero({ profile, isLoading }: HeroProps) {
 
   return (
     <section id="home" className="min-h-screen flex items-center relative overflow-hidden">
-      <div className="container relative z-10 pt-24 pb-16">
+      <div className="container relative z-10 pt-24 pb-20">
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
-          className="max-w-4xl"
+          className="max-w-5xl"
         >
-          {/* Status Badge */}
-          <motion.div variants={item}>
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-[#222] bg-[#141414] mb-8">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+          {/* Greeting + Status */}
+          <motion.div variants={item} className="mb-6">
+            <p className="text-lg sm:text-xl text-[#888] font-medium">
+              Hello, I'm {profile?.name || 'Lekhan H R'} —{' '}
+              <span className="inline-flex items-center gap-2 text-emerald-400">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                </span>
+                Open to GSoC 2025
               </span>
-              <span className="text-sm text-[#888] font-medium">
-                Available for GSoC 2025
-              </span>
-            </div>
+            </p>
           </motion.div>
 
-          {/* Main Heading — serif/sans mix */}
+          {/* Main Headline — editorial, impactful */}
           <motion.h1
             variants={item}
-            className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.05] tracking-tight mb-6 text-white"
+            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] tracking-tight mb-8 text-white"
           >
-            Hi, I'm{' '}
-            <span className="font-serif italic">{profile?.name || 'Lekhan H R'}</span>
+            I build{' '}
+            <span className="font-serif italic">edge AI apps</span>{' '}
+            & full-stack products that turn complex ideas into{' '}
+            <span className="font-serif italic">simple solutions</span>
           </motion.h1>
 
-          {/* Subtitle with typing */}
-          <motion.div variants={item} className="mb-6">
-            <p className="text-xl sm:text-2xl lg:text-3xl text-[#888] font-medium">
-              {displayedText}
+          {/* Role typing */}
+          <motion.div variants={item} className="mb-8">
+            <p className="text-xl sm:text-2xl text-[#666] font-medium">
+              {displayedRole}
               <motion.span
                 animate={{ opacity: [1, 0] }}
                 transition={{ duration: 0.5, repeat: Infinity, repeatType: 'reverse' }}
@@ -99,13 +102,14 @@ export default function Hero({ profile, isLoading }: HeroProps) {
             </p>
           </motion.div>
 
-          {/* Description */}
+          {/* Bio from GitHub */}
           <motion.p
             variants={item}
-            className="text-lg text-[#888] mb-10 max-w-2xl leading-relaxed"
+            className="text-lg text-[#888] mb-10 max-w-3xl leading-relaxed"
           >
             {profile?.bio ||
-              'Building production-grade applications with modern web technologies and contributing to open-source. Passionate about AI and scalable systems.'}
+              'AI enthusiast building edge AI apps with TypeScript, Python & JavaScript. Turning complex ideas into simple solutions.'}
+            {' '}Based in {profile?.location || 'Bangalore'}, shipping production-grade code across 25+ repositories.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -130,8 +134,8 @@ export default function Hero({ profile, isLoading }: HeroProps) {
               href="#contact"
               className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl border border-[#222] text-[#888] font-medium text-base hover:border-[#333] hover:text-[#ededed] hover:bg-[#141414]/50 transition-all duration-300"
             >
-              <Download size={18} />
-              Resume
+              <Mail size={18} />
+              Let's Connect
             </a>
           </motion.div>
         </motion.div>

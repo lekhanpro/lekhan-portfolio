@@ -1,7 +1,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { GitHubProfile, LanguageStats } from '@/lib/github';
-import { Users, FolderGit2, Calendar, Code2 } from 'lucide-react';
+import { Users, FolderGit2, Calendar, Code2, Github, Linkedin, Twitter, ArrowUpRight } from 'lucide-react';
 
 interface AboutProps {
   profile: GitHubProfile | null;
@@ -38,30 +38,36 @@ export default function About({ profile, languages, isLoading }: AboutProps) {
   const stats = [
     {
       label: 'Followers',
-      value: profile?.followers.toLocaleString() || '0',
+      value: profile?.followers.toLocaleString() || '4',
       icon: Users,
     },
     {
       label: 'Public Repos',
-      value: profile?.repos.toLocaleString() || '0',
+      value: profile?.repos.toLocaleString() || '25',
       icon: FolderGit2,
     },
     {
-      label: 'Joined',
-      value: profile?.createdAt ? new Date(profile.createdAt).getFullYear().toString() : '—',
+      label: 'Since',
+      value: profile?.createdAt ? new Date(profile.createdAt).getFullYear().toString() : '2024',
       icon: Calendar,
     },
     {
       label: 'Top Language',
-      value: languages[0]?.name || '—',
+      value: languages[0]?.name || 'TypeScript',
       icon: Code2,
     },
+  ];
+
+  const socials = [
+    { icon: Github, href: profile?.url || 'https://github.com/lekhanpro', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://linkedin.com/in/lekhan-h-r', label: 'LinkedIn' },
+    { icon: Twitter, href: profile?.twitter ? `https://twitter.com/${profile.twitter}` : 'https://twitter.com/lekhu4405', label: 'Twitter' },
   ];
 
   return (
     <section id="about" className="py-28 relative" ref={ref}>
       <div className="container">
-        {/* Section Header */}
+        {/* Section Header — editorial style like "A QUICK GLANCE" */}
         <motion.div
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
@@ -70,18 +76,96 @@ export default function About({ profile, languages, isLoading }: AboutProps) {
           className="mb-16"
         >
           <span className="text-sm font-semibold text-[#888] uppercase tracking-widest mb-3 block">
-            Get to know me
+            A Quick Glance
           </span>
           <h2 className="section-heading">
-            About <span className="font-serif italic">Me</span>
+            Building the bridge between{' '}
+            <span className="font-serif italic">ideas</span> and{' '}
+            <span className="font-serif italic">experiences</span>
           </h2>
-          <p className="section-subtitle">
-            {profile?.bio || 'Full-Stack Developer with a passion for building innovative solutions'}
-          </p>
         </motion.div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+        {/* Editorial Body */}
+        <div className="grid lg:grid-cols-5 gap-12 items-start mb-16">
+          <motion.div
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            custom={1}
+            variants={fadeUp}
+            className="lg:col-span-3 space-y-6"
+          >
+            <p className="text-lg text-[#aaa] leading-relaxed">
+              I'm a full-stack developer from{' '}
+              <span className="text-white font-medium">Bangalore</span>{' '}
+              with deep expertise in{' '}
+              <span className="text-white font-medium">TypeScript, Python, and JavaScript</span>.
+              I build production-grade web applications, edge AI systems, and developer tools —
+              from Stockfish-powered chess analysis to healthcare platforms and smart money managers.
+            </p>
+            <p className="text-lg text-[#aaa] leading-relaxed">
+              Currently pursuing Computer Science at{' '}
+              <span className="text-white font-medium">DBIT</span>{' '}
+              with IEEE-published research, I'm focused on open-source contributions
+              and targeting{' '}
+              <span className="text-white font-medium">Google Summer of Code 2025</span>.
+              My code ships across{' '}
+              <span className="text-white font-medium">{profile?.repos || 25}+ repositories</span>{' '}
+              spanning React, Next.js, Node.js, FastAPI, Go, and AI/ML tooling.
+            </p>
+
+            {/* Social links */}
+            <div className="flex items-center gap-4 pt-4">
+              {socials.map((s) => {
+                const Icon = s.icon;
+                return (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-xl bg-[#141414] border border-[#222] flex items-center justify-center text-[#888] hover:text-white hover:border-[#333] transition-all"
+                    title={s.label}
+                  >
+                    <Icon size={18} />
+                  </a>
+                );
+              })}
+              <a
+                href="#about"
+                className="text-sm text-[#888] hover:text-white transition-colors inline-flex items-center gap-1 ml-2"
+              >
+                Dive in deeper
+                <ArrowUpRight size={14} />
+              </a>
+            </div>
+          </motion.div>
+
+          {/* Quick stats grid */}
+          <motion.div
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            custom={2}
+            variants={fadeUp}
+            className="lg:col-span-2"
+          >
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { value: '10+', label: 'Production Apps' },
+                { value: '25+', label: 'Repositories' },
+                { value: 'GSoC', label: 'Aspirant 2025' },
+                { value: 'IEEE', label: 'Published' },
+              ].map((s, i) => (
+                <div key={i} className="solid-card p-5 text-center">
+                  <div className="text-xl font-bold text-white">{s.value}</div>
+                  <div className="text-xs text-[#888] mt-1">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* GitHub Stats Bar */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
@@ -89,7 +173,7 @@ export default function About({ profile, languages, isLoading }: AboutProps) {
                 key={index}
                 initial="hidden"
                 animate={isInView ? 'visible' : 'hidden'}
-                custom={index + 1}
+                custom={index + 3}
                 variants={fadeUp}
                 className="solid-card p-6"
               >
@@ -101,52 +185,6 @@ export default function About({ profile, languages, isLoading }: AboutProps) {
               </motion.div>
             );
           })}
-        </div>
-
-        {/* About Text */}
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Editorial Text */}
-          <motion.div
-            initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
-            custom={5}
-            variants={fadeUp}
-            className="space-y-6"
-          >
-            <h3 className="text-xl font-bold text-white">
-              Crafting <span className="font-serif italic">Digital</span> Experiences
-            </h3>
-            <p className="text-[#888] leading-relaxed">
-              I'm a passionate full-stack developer with expertise in modern web technologies and artificial intelligence.
-              My journey in tech has been driven by a love for solving complex problems and creating elegant, production-ready solutions.
-            </p>
-            <p className="text-[#888] leading-relaxed">
-              With experience in React, Node.js, Python, and AI/ML, I build scalable applications that make a real impact.
-              I actively contribute to open-source projects and am targeting GSoC to deepen my contributions to the developer community.
-            </p>
-          </motion.div>
-
-          {/* Quick stats grid */}
-          <motion.div
-            initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
-            custom={6}
-            variants={fadeUp}
-          >
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { value: '4+', label: 'Projects Built' },
-                { value: '100%', label: 'Dedication' },
-                { value: 'GSoC', label: 'Aspirant 2025' },
-                { value: 'IEEE', label: 'Published' },
-              ].map((s, i) => (
-                <div key={i} className="solid-card p-5 text-center">
-                  <div className="text-xl font-bold text-white">{s.value}</div>
-                  <div className="text-xs text-[#888] mt-1">{s.label}</div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
         </div>
       </div>
 
