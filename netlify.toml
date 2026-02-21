@@ -4,8 +4,7 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  NETLIFY_USE_PNPM = "true"
-  PNPM_FLAGS = "--no-frozen-lockfile"
+  NETLIFY_SKIP_DEPENDENCY_INSTALL = "true"
 
 # SPA client-side routing fallback
 [[redirects]]
