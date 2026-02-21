@@ -13,6 +13,8 @@ import {
   getTopRepositories,
   getLanguageStats,
   generateExperienceTimeline,
+  FALLBACK_PROFILE,
+  FALLBACK_REPOS,
   GitHubProfile,
   GitHubRepository,
   LanguageStats,
@@ -28,18 +30,22 @@ const Experience = lazy(() => import('@/components/Experience'));
 const Contact = lazy(() => import('@/components/Contact'));
 
 export default function Home() {
-  const [profile, setProfile] = useState<GitHubProfile | null>(null);
-  const [projects, setProjects] = useState<GitHubRepository[]>([]);
-  const [allRepos, setAllRepos] = useState<GitHubRepository[]>([]);
-  const [languages, setLanguages] = useState<LanguageStats[]>([]);
-  const [experience, setExperience] = useState<ExperienceEvent[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // Initialize with fallback data so sections always render immediately
+  const fallbackLangs = getLanguageStats(FALLBACK_REPOS);
+  const fallbackExp = generateExperienceTimeline(FALLBACK_PROFILE, FALLBACK_REPOS);
+  const fallbackTop = getTopRepositories(FALLBACK_REPOS, 6);
+
+  const [profile, setProfile] = useState<GitHubProfile | null>(FALLBACK_PROFILE);
+  const [projects, setProjects] = useState<GitHubRepository[]>(fallbackTop);
+  const [allRepos, setAllRepos] = useState<GitHubRepository[]>(FALLBACK_REPOS);
+  const [languages, setLanguages] = useState<LanguageStats[]>(fallbackLangs);
+  const [experience, setExperience] = useState<ExperienceEvent[]>(fallbackExp);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        setIsLoading(true);
         setError(null);
 
         const profileData = await fetchProfile();
@@ -58,8 +64,6 @@ export default function Home() {
       } catch (err) {
         console.error('Error loading portfolio data:', err);
         setError(err instanceof Error ? err.message : 'Failed to load portfolio data');
-      } finally {
-        setIsLoading(false);
       }
     };
 

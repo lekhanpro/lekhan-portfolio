@@ -63,7 +63,7 @@ export interface GitHubRepository {
 }
 
 // Fallback data so the site renders even when GitHub API is unreachable
-const FALLBACK_PROFILE: GitHubProfile = {
+export const FALLBACK_PROFILE: GitHubProfile = {
   name: 'Lekhan H R',
   login: 'lekhanpro',
   avatar: 'https://avatars.githubusercontent.com/u/lekhanpro',
@@ -79,7 +79,7 @@ const FALLBACK_PROFILE: GitHubProfile = {
   url: 'https://github.com/lekhanpro',
 };
 
-const FALLBACK_REPOS: GitHubRepository[] = [
+export const FALLBACK_REPOS: GitHubRepository[] = [
   {
     id: 1,
     name: 'chess-post-game-analyst',
